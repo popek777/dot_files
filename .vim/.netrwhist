@@ -1,0 +1,6 @@
+let g:netrw_dirhistmax  =10
+let g:netrw_dirhist_cnt =4
+let g:netrw_dirhist_1='/home/g589029/workspace/trunk/IntegrationLibrary/build/iltest/testil/config'
+let g:netrw_dirhist_2='/home/g589029/workspace/QUARKCPP-473-GS-HB-improvement/IntegrationLibrary/setup'
+let g:netrw_dirhist_3='/home/g589029/workspace/trunk/IntegrationLibrary/build/iltest/testil/config'
+let g:netrw_dirhist_4='/lib/kbd/keymaps'
