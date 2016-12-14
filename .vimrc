@@ -192,8 +192,14 @@ au BufRead,BufNewFile *.log set filetype=log4j
 
 " c++ build systems extensions
 " 'write all and build'
-nnoremap <F7> :wa<CR>:make!<CR>
+"nnoremap <F7> :wa<CR>:make!<CR>
+:command! -nargs=1 OperaBuild :cgetexpr system('ninja -C ./chromium/src/out/Debug/ <args>')
 
 " exiting with saving session 
 nnoremap <F4> :mksession! last.vim<CR>:qa<CR>
 
+" indentation
+set autoindent
+set softtabstop=4
+set expandtab
+set shiftwidth=2 
