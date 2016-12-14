@@ -15,11 +15,18 @@ set wildignore+=*/tmp/*,*.so,*.swp,*.zip
 let g:ctrlp_cmd = 'CtrlPMixed'
 
 " find in files
+function! MMFastFindUsingGrep(pattern_to_find, find_whole_word)
+    if a:find_whole_word
+        cgetexpr system("grep -nrw --include=*.{cpp,cc,h,hpp} " . a:pattern_to_find)
+    else
+        cgetexpr system("grep -nr --include=*.{cpp,cc,h,hpp} " . a:pattern_to_find)
+    endif
+endfunction
 " s(earch) c(like files)
-:command! -nargs=1 MMsc  vimgrep /<args>/j **/*.c **/*.h **/*.cpp **/*.cc
-
+:command! -nargs=1 MMsc :call MMFastFindUsingGrep(<f-args>, 0)
 " s(earch) c(like files) w(hole word only)
-:command! -nargs=1 MMscw  vimgrep /\<<args>\>/j **/*.c **/*.h **/*.cpp **/*.cc
+:command! -nargs=1 MMscw :call MMFastFindUsingGrep(<f-args>, 1)
+
 " clike files search word under cursor mapping
 " s(earch) w(ord under cursor)
 :nmap <Leader>ws :MMsc <C-R><C-W><CR>:copen<CR>
@@ -71,33 +78,9 @@ endfunction
 " :nmap <Leader>bfw /<C-R><C-W><CR>
 
 " cscope
-" C-like f(ind) s(ymbol)
-:nmap <Leader>fs :vert scs find s <C-R><C-W><CR>
-" goto definition
-:nmap <Leader>fg :vert scs find g <C-R><C-W><CR>
-" find callers
-:nmap <Leader>fc :vert scs find c <C-R><C-W><CR>
-" find file
-:nmap <Leader>ff :vert scs find f <C-R><C-W><CR>
-" find files #including this file
-:nmap <Leader>fi :vert scs find i <C-R><C-W><CR>
+so ~/.vim/cscope_maps
+"so ~/.vim/mw_cscope_maps
 
-if has('cscope')
-  set cscopetag cscopeverbose
-
-  if has('quickfix')
-    set cscopequickfix=s-,c-,d-,i-,t-,e-
-  endif
-
-  cnoreabbrev csa cs add
-  cnoreabbrev csf cs find
-  cnoreabbrev csk cs kill
-  cnoreabbrev csr cs reset
-  cnoreabbrev css cs show
-  cnoreabbrev csh cs help
-
-  " command -nargs=0 Cscope cs add $VIMSRC/src/cscope.out $VIMSRC/sr
-endif
 
 " tabs management
 :nmap <Leader>tn :tabn<CR>
@@ -177,7 +160,6 @@ imap <C-F> <C-O>:pyf ~/.vim/clang-format.py<CR>
 
 so ~/.vim/.vimrc_from_internet
 so ~/.vim/DoxygenToolkit.vim
-" so ~/.vim/cscope_maps
 
 
 set textwidth=80
@@ -211,4 +193,7 @@ au BufRead,BufNewFile *.log set filetype=log4j
 " c++ build systems extensions
 " 'write all and build'
 nnoremap <F7> :wa<CR>:make!<CR>
+
+" exiting with saving session 
+nnoremap <F4> :mksession! last.vim<CR>:qa<CR>
 
