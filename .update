@@ -1,0 +1,11 @@
+#!/bin/bash
+
+# simple script used to update dot_files directory 
+
+REPO_DIR="$(cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd)"
+
+rm -rf $REPO_DIR/.vim
+rm -rf $REPO_DIR/.vimrc
+
+cp -R $HOME/.vim $REPO_DIR
+cp $HOME/.vimrc $REPO_DIR
