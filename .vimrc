@@ -29,11 +29,11 @@ endfunction
 
 " clike files search word under cursor mapping
 " s(earch) w(ord under cursor)
-:nmap <Leader>ws :MMsc <C-R><C-W><CR>:copen<CR>
+:nmap <Leader>ws :MMsc <C-R><C-W><CR>:botright copen<CR>
 " s(earch) w(hole) w(ord under cursor)
-:nmap <Leader>wws :MMscw <C-R><C-W><CR>:copen<CR>
+:nmap <Leader>wws :MMscw <C-R><C-W><CR>:botright copen<CR>
 " s(earch) s(election)
-:vn <Leader>ss y:MMsc <C-R>"<CR>:copen<CR>
+:vn <Leader>ss y:MMsc "<C-R>""<CR>:botright copen<CR>
 
 function! MMReplaceInAllFiles(old, whole_word)
     let new = input("what is the new word? ", a:old)
@@ -111,7 +111,7 @@ function! ToggleList(bufname, pfx)
       return
   endif
   let winnr = winnr()
-  exec(a:pfx.'open')
+  exec('botright ' . a:pfx.'open')
   if winnr() != winnr
     wincmd p
   endif
@@ -155,8 +155,10 @@ let g:bookmark_manage_per_buffer = 1
 
 " clang-format tool
 " u(pdate) f(ormat)
-"map <Leader>uf :pyf ~/.vim/clang-format.py<CR>
-imap <C-F> <C-O>:pyf ~/.vim/clang-format.py<CR>
+" NOTE: 
+" if vim is compiled with python 2.7 (instead of 3.x) use pyfile instead py3file
+map <Leader>uf :py3file ~/.vim/clang-format.py<CR>
+imap <C-F> <C-O>:py3file ~/.vim/clang-format.py<CR>
 
 so ~/.vim/.vimrc_from_internet
 so ~/.vim/DoxygenToolkit.vim
@@ -190,13 +192,19 @@ nnoremap <C-l> <C-w>l
 " TODO: syntax coloring for logs is not working! to be investigated
 au BufRead,BufNewFile *.log set filetype=log4j 
 
+" exitCng with saving session 
+nnoremap <F4> :mksession! last.vim<CR>:qa<CR>
+
 " c++ build systems extensions
 " 'write all and build'
 "nnoremap <F7> :wa<CR>:make!<CR>
+"
+" Opera code specific settings
+"
+" build command
 :command! -nargs=1 OperaBuild :cgetexpr system('ninja -C ./chromium/src/out/Debug/ <args>')
-
-" exiting with saving session 
-nnoremap <F4> :mksession! last.vim<CR>:qa<CR>
+" clang formatter path (variable used in clang-format.py script)
+let g:clang_format_path = $HOME . '/workspace/work/chromium/src/buildtools/linux64/clang-format'
 
 " indentation
 set autoindent
