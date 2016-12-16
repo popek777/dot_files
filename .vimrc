@@ -14,18 +14,26 @@ let g:NERDTreeDirArrows = 0
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip     
 let g:ctrlp_cmd = 'CtrlPMixed'
 
+" my auxiliary settings
+" variable containing cxx language file extension in comma separated list 
+let g:c_like_files_extensions_csv='cpp,cc,c,h,hpp'
+
 " find in files
-function! MMFastFindUsingGrep(pattern_to_find, find_whole_word)
+function! MMFastFindUsingGrep(pattern_to_find, find_whole_word, csv_extensions)
+    let l:grep_flags = 'nr'
     if a:find_whole_word
-        cgetexpr system("grep -nrw --include=*.{cpp,cc,h,hpp} " . a:pattern_to_find)
-    else
-        cgetexpr system("grep -nr --include=*.{cpp,cc,h,hpp} " . a:pattern_to_find)
+        let l:grep_flags = l:grep_flags . 'w'
     endif
+    cgetexpr system("grep -" . l:grep_flags . " --include=*.{" 
+                    \ . a:csv_extensions . "} " . a:pattern_to_find)
 endfunction
+
 " s(earch) c(like files)
-:command! -nargs=1 MMsc :call MMFastFindUsingGrep(<f-args>, 0)
+:command! -nargs=1 MMsc 
+      \:call MMFastFindUsingGrep(<f-args>, 0, g:c_like_files_extensions_csv)
 " s(earch) c(like files) w(hole word only)
-:command! -nargs=1 MMscw :call MMFastFindUsingGrep(<f-args>, 1)
+:command! -nargs=1 MMscw 
+      \:call MMFastFindUsingGrep(<f-args>, 1, g:c_like_files_extensions_csv)
 
 " clike files search word under cursor mapping
 " s(earch) w(ord under cursor)
@@ -35,23 +43,30 @@ endfunction
 " s(earch) s(election)
 :vn <Leader>ss y:MMsc "<C-R>""<CR>:botright copen<CR>
 
-function! MMReplaceInAllFiles(old, whole_word)
+
+function! MMReplaceInAllFiles(old, whole_word, extensions_csv)
     let new = input("what is the new word? ", a:old)
     echo "Replacing in all files: " . a:old . " -> " . new
     " replaces '/' with '\/'
     let old_ext = substitute(a:old, "/", "\\\\/", "g") 
     let new_ext = substitute(new, "/", "\\\\/", "g") 
+    let sed_arg = ""
     if a:whole_word
-        execute ":!grep -r -l " . old_ext . " --include=*.{cpp,h,hpp,cc,c} . | xargs sed -i -e 's/\\b" . old_ext  . "\\b/" . new_ext . "/g'"
-    else
-        execute ":!grep -r -l " . old_ext . " --include=*.{cpp,h,hpp,cc,c} . | xargs sed -i -e 's/" . old_ext  . "/" . new_ext . "/g'"
+        let sed_arg = "\\b"
     endif
+    execute ":!grep -r -l " . old_ext . " --include=*.{" 
+          \ . a:extensions_csv . "} . | xargs sed -i -e 's/" 
+          \ . sed_arg . old_ext  . sed_arg . "/" . new_ext . "/g'"
 endfunction
+
 :command! -nargs=* MMafr :call MMReplaceInAllFiles(<f-args>)
 " a(ll files) w(hole) w(ord under cursor) r(eplace)
-:nmap <Leader>awwr :MMafr <C-R><C-W> 1<CR>
+:nmap <Leader>awwr 
+      \ :MMafr <C-R><C-W> 1 g:c_like_files_extensions_csv<CR>
 " a(ll files) s(election) r(emplace) 
-:vn <Leader>asr y:call MMReplaceInAllFiles(@", 0)<CR>
+:vn <Leader>asr 
+      \ y:call MMReplaceInAllFiles(@", 0, g:c_like_files_extensions_csv)<CR>
+
 
 " r(eplace) w(ord) in file
 function! MMFunReplace(old, whole_word)
@@ -63,6 +78,7 @@ function! MMFunReplace(old, whole_word)
         execute ":%s/" . a:old .  "/" . new  . "/g"
     endif
 endfunction
+
 :command! -nargs=* MMr :call MMFunReplace(<f-args>)
 " w(ord under cursor) r(eplace) 
 :nmap <Leader>wr :MMr <C-R><C-W> 0<CR>
@@ -200,11 +216,7 @@ nnoremap <F4> :mksession! last.vim<CR>:qa<CR>
 "nnoremap <F7> :wa<CR>:make!<CR>
 "
 " Opera code specific settings
-"
-" build command
-:command! -nargs=1 OperaBuild :cgetexpr system('ninja -C ./chromium/src/out/Debug/ <args>')
-" clang formatter path (variable used in clang-format.py script)
-let g:clang_format_path = $HOME . '/workspace/work/chromium/src/buildtools/linux64/clang-format'
+so ~/.vim/.vimrc-opera
 
 " indentation
 set autoindent
