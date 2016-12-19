@@ -1,5 +1,5 @@
 " 
-" opera codebase settings
+" opera codebase settings, functions, commands
 "
 
 let g:c_like_files_extensions_csv='cpp,cc,h,hpp'
@@ -11,3 +11,18 @@ let g:c_like_files_extensions_csv='cpp,cc,h,hpp'
 " clang formatter path (variable used in clang-format.py script)
 let g:clang_format_path = 
       \ $HOME . '/workspace/work/chromium/src/buildtools/linux64/clang-format'
+
+" update cscope database (pure set of bash commands)
+function! FOperaUpdateCscopeDb()
+  :!cd $HOME/workspace/work
+        \&& rm -f cscope*
+        \ 
+        \&& find . -name *.h -or
+        \ -name *.hpp -or
+        \ -name *.cc -or 
+        \ -name *.cpp > cscope.files
+        \
+        \&& cscope -b -q -k
+endfunction
+:command! OperaUpdateCscopeDb :call FOperaUpdateCscopeDb()
+

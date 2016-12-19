@@ -7,7 +7,9 @@ filetype plugin indent on
 set makeprg=make\ -C\ build
 
 " nerdtree settings
-map <C-n> :NERDTreeToggle<CR>
+nmap <C-n> :NERDTreeToggle<CR>
+" finds current buffer in nerdtree - n(erdtree) f(ind)
+nmap <Leader>nf :NERDTreeFind<CR>
 let g:NERDTreeDirArrows = 0
 
 " ctrlp settings
@@ -24,16 +26,19 @@ function! MMFastFindUsingGrep(pattern_to_find, find_whole_word, csv_extensions)
     if a:find_whole_word
         let l:grep_flags = l:grep_flags . 'w'
     endif
-    cgetexpr system("grep -" . l:grep_flags . " --include=*.{" 
-                    \ . a:csv_extensions . "} " . a:pattern_to_find)
+
+    " replace - -> \-
+    let l:pattern_to_find = substitute(a:pattern_to_find, '-', '\\-', "g") 
+    cgetexpr system('grep -' . l:grep_flags . ' --include=*.{' 
+                    \ . a:csv_extensions . '} ' . l:pattern_to_find)
 endfunction
 
 " s(earch) c(like files)
 :command! -nargs=1 MMsc 
-      \:call MMFastFindUsingGrep(<f-args>, 0, g:c_like_files_extensions_csv)
+      \:call MMFastFindUsingGrep('<f-args>', 0, g:c_like_files_extensions_csv)
 " s(earch) c(like files) w(hole word only)
 :command! -nargs=1 MMscw 
-      \:call MMFastFindUsingGrep(<f-args>, 1, g:c_like_files_extensions_csv)
+      \:call MMFastFindUsingGrep('<f-args>', 1, g:c_like_files_extensions_csv)
 
 " clike files search word under cursor mapping
 " s(earch) w(ord under cursor)
@@ -41,7 +46,7 @@ endfunction
 " s(earch) w(hole) w(ord under cursor)
 :nmap <Leader>wws :MMscw <C-R><C-W><CR>:botright copen<CR>
 " s(earch) s(election)
-:vn <Leader>ss y:MMsc "<C-R>""<CR>:botright copen<CR>
+:vn <Leader>ss y:MMsc <C-R>"<CR>:botright copen<CR>
 
 
 function! MMReplaceInAllFiles(old, whole_word, extensions_csv)
@@ -59,7 +64,7 @@ function! MMReplaceInAllFiles(old, whole_word, extensions_csv)
           \ . sed_arg . old_ext  . sed_arg . "/" . new_ext . "/g'"
 endfunction
 
-:command! -nargs=* MMafr :call MMReplaceInAllFiles(<f-args>)
+:command! -nargs=* MMafr :call MMReplaceInAllFiles('<f-args>')
 " a(ll files) w(hole) w(ord under cursor) r(eplace)
 :nmap <Leader>awwr 
       \ :MMafr <C-R><C-W> 1 g:c_like_files_extensions_csv<CR>
