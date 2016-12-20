@@ -1,6 +1,17 @@
+" required when running vim 8.0 build by instructions from:
+" https://github.com/Valloric/YouCompleteMe/wiki/Building-Vim-from-source
+set nocompatible
+
 execute pathogen#infect()
 syntax on
 filetype plugin indent on
+
+" clang_complete plugin requires this path
+let g:clang_library_path='/usr/lib/llvm-3.8/lib/libclang-3.8.so.1'
+
+" change default jump to so it does not interfear with tag mapping
+let g:clang_jumpto_declaration_key = '<F12>'
+let g:clang_jumpto_declaration_in_preview_key = '<C-F12>'
 
 " c/c++ settings
 " set default make prg 
@@ -100,7 +111,8 @@ endfunction
 
 " cscope
 so ~/.vim/cscope_maps
-"so ~/.vim/mw_cscope_maps
+" unset cscopetag (so C-] works with tag rather then cstag)
+set nocscopetag
 
 
 " tabs management
@@ -213,7 +225,7 @@ nnoremap <C-l> <C-w>l
 " TODO: syntax coloring for logs is not working! to be investigated
 au BufRead,BufNewFile *.log set filetype=log4j 
 
-" exitCng with saving session 
+" exit with saving session 
 nnoremap <F4> :mksession! last.vim<CR>:qa<CR>
 
 " c++ build systems extensions

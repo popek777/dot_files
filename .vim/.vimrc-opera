@@ -26,3 +26,22 @@ function! FOperaUpdateCscopeDb()
 endfunction
 :command! OperaUpdateCscopeDb :call FOperaUpdateCscopeDb()
 
+" update ctags database 
+" based on https://www.youtube.com/watch?v=o0BgAp11C9s
+function! FOperaUpdateCtagsDb()
+  :!cd $HOME/workspace/work
+        \ && rm -f tags 
+        \ 
+        \ && ctags 
+        \ --c++-kinds=+p 
+        \ --fields=+iaS 
+        \ --extra=+q 
+        \ -f ./tags 
+        \ -R
+        \ --languages=C++ 
+        \ --exclude=chromium/src/out/* 
+        \ --exclude=chromium/src/third_party/*
+        \ --exclude=chromium/src/build* 
+        \ .
+endfunction
+:command! OperaUpdateCtagsDb :call FOperaUpdateCtagsDb()
