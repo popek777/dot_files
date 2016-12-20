@@ -45,3 +45,18 @@ function! FOperaUpdateCtagsDb()
         \ .
 endfunction
 :command! OperaUpdateCtagsDb :call FOperaUpdateCtagsDb()
+
+" based on
+" http://vim.wikia.com/wiki/Easily_switch_between_source_and_header_file
+function! SwitchSourceHeader()
+  let l:ext = expand ("%:e")
+  echo l:ext
+  if ( l:ext == "cc")
+    find %:t:r.h
+  elseif (l:ext == "h")
+    find %:t:r.cc
+  else 
+    echo "toggling skipped (not a c++ file)"
+  endif
+endfunction
+nmap ,s :call SwitchSourceHeader()<CR>
