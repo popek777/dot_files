@@ -1,0 +1,20 @@
+#!/bin/bash
+
+#
+# some useful setttings/funcions for opera codebase development
+#
+
+export PATH=$PATH:$HOME/workspace/depot_tools
+
+function operadev_32_ld_library_path()
+{
+  # export library paths for 32 bit apps
+  export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:\
+/lib/i386-linux-gnu/:\
+/usr/lib/i386-linux-gnu/:\
+/lib/i686-linux-gnu/:\
+/usr/lib/i686-linux-gnu/:\
+$HOME/workspace/sysroots/wheezy-ia32/lib/i386-linux-gnu/:\
+$HOME/workspace/sysroots/wheezy-ia32/usr/lib/i386-linux-gnu/
+
+}
