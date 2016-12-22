@@ -2,6 +2,8 @@
 " https://github.com/Valloric/YouCompleteMe/wiki/Building-Vim-from-source
 set nocompatible
 
+set nowrap
+
 execute pathogen#infect()
 syntax on
 filetype plugin indent on
@@ -170,21 +172,10 @@ let g:bookmark_auto_save = 1
 let g:bookmark_manage_per_buffer = 1
 
 
-" workds BAD with putty solarized
-" solarized
- " syntax enable
- " set background=dark
- " colorscheme solarized
+" solarized settings: based on https://gist.github.com/ryu-blacknd/3281760
+set t_Co=256
+set background=dark
 
-" extend path variable
-
-"function! to_reg()
-    "let tmp_reg = @a
-    "redir @a
-    "silent! execute()
-    "redir END
-    ":r !find . -name include | tr \\n ","
-"endfunction
 
 " clang-format tool
 " u(pdate) f(ormat)
