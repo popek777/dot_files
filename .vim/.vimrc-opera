@@ -60,3 +60,14 @@ function! SwitchSourceHeader()
   endif
 endfunction
 nmap ,s :call SwitchSourceHeader()<CR>
+
+" YCM plugin settings
+" path to config file (the only difference with default one is additional
+" includes)
+let g:ycm_global_ycm_extra_conf = $HOME . '/.vim/.ycm_extra_conf_opera.py'
+
+" extend path (so gf - goto file under cursor) works correctly 
+set path=.,,/usr/include,chromium/src
+
+" rtags settings
+let g:rtagsRcCmd=$HOME . '/rtags/build/bin/rc'

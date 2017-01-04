@@ -8,12 +8,15 @@ execute pathogen#infect()
 syntax on
 filetype plugin indent on
 
-" clang_complete plugin requires this path
-let g:clang_library_path='/usr/lib/llvm-3.8/lib/libclang-3.8.so.1'
+"" clang_complete plugin requires this path
+"let g:clang_library_path='/usr/lib/llvm-3.8/lib/libclang-3.8.so.1'
+"" change default jump to so it does not interfear with tag mapping
+"let g:clang_jumpto_declaration_key = '<F12>'
+"let g:clang_jumpto_declaration_in_preview_key = '<C-F12>'
 
-" change default jump to so it does not interfear with tag mapping
-let g:clang_jumpto_declaration_key = '<F12>'
-let g:clang_jumpto_declaration_in_preview_key = '<C-F12>'
+" YCM plugin settings
+" default file taken from plugin ycm server
+let g:ycm_global_ycm_extra_conf = $HOME . '/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
 
 " c/c++ settings
 " set default make prg 

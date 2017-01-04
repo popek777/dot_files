@@ -18,3 +18,23 @@ $HOME/workspace/sysroots/wheezy-ia32/lib/i386-linux-gnu/:\
 $HOME/workspace/sysroots/wheezy-ia32/usr/lib/i386-linux-gnu/
 
 }
+
+function operadev_rtags_rdm()
+{
+  RTAGS_BIN_DIR=$HOME/rtags/build/bin
+  $RTAGS_BIN_DIR/rdm -L $HOME/.rdm-log &
+}
+
+function operadev_rtags_update_indexes()
+{
+  PROJECT_DIR=$HOME/workspace/work
+  PROJECT_OUT_DIR=$PROJECT_DIR/chromium/src/out/Debug
+
+  RTAGS_BIN_DIR=$HOME/rtags/build/bin
+
+  cd $PROJECT_OUT_DIR
+  ninja -t compdb cc > compile_commands.json
+
+  $RTAGS_BIN_DIR/rc -J $PROJECT_OUT_DIR/compile_commands.json
+}
+
