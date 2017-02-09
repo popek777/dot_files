@@ -36,6 +36,16 @@ let g:ctrlp_cmd = 'CtrlPMixed'
 " variable containing cxx language file extension in comma separated list 
 let g:c_like_files_extensions_csv='cpp,cc,c,h,hpp'
 
+function! GrepLikeCsvExtensionList2IncludePattern(csv_extensions)
+  let l:include_pattern = '--include=*.'
+  if(len(split(a:csv_extensions, ',')) > 1)
+    return l:include_pattern . '{' . a:csv_extensions . '}'
+  else
+    return l:include_pattern . a:csv_extensions
+  endif
+  
+endfunction
+
 " find in files
 function! MMFastFindUsingGrep(pattern_to_find, find_whole_word, csv_extensions)
     let l:grep_flags = 'nr'
@@ -45,8 +55,12 @@ function! MMFastFindUsingGrep(pattern_to_find, find_whole_word, csv_extensions)
 
     " replace - -> \-
     let l:pattern_to_find = substitute(a:pattern_to_find, '-', '\\-', "g") 
-    cgetexpr system('grep -' . l:grep_flags . ' --include=*.{' 
-                    \ . a:csv_extensions . '} ' . l:pattern_to_find)
+    let l:pattern_to_find = substitute(a:pattern_to_find, '*', '\\*', "g") 
+    let l:pattern_to_find = substitute(a:pattern_to_find, ' ', '\\ ', "g") 
+
+    cgetexpr system('grep -' . l:grep_flags . ' '
+                    \ . GrepLikeCsvExtensionList2IncludePattern(a:csv_extensions)
+                    \ . ' ' . l:pattern_to_find)
 endfunction
 
 " s(earch) c(like files)
@@ -65,7 +79,7 @@ endfunction
 :vn <Leader>ss y:MMsc <C-R>"<CR>:botright copen<CR>
 
 
-function! MMReplaceInAllFiles(old, whole_word, extensions_csv)
+function! MMReplaceInAllFiles(old, whole_word, csv_extensions)
     let new = input("what is the new word? ", a:old)
     echo "Replacing in all files: " . a:old . " -> " . new
     " replaces '/' with '\/'
@@ -75,8 +89,9 @@ function! MMReplaceInAllFiles(old, whole_word, extensions_csv)
     if a:whole_word
         let sed_arg = "\\b"
     endif
-    execute ":!grep -r -l " . old_ext . " --include=*.{" 
-          \ . a:extensions_csv . "} . | xargs sed -i -e 's/" 
+    execute ":!grep -r -l " . old_ext . " "
+          \ . GrepLikeCsvExtensionList2IncludePattern(a:csv_extensions) 
+          \ . " . | xargs sed -i -e 's/" 
           \ . sed_arg . old_ext  . sed_arg . "/" . new_ext . "/g'"
 endfunction
 
@@ -184,8 +199,8 @@ set background=dark
 " u(pdate) f(ormat)
 " NOTE: 
 " if vim is compiled with python 2.7 (instead of 3.x) use pyfile instead py3file
-map <Leader>uf :py3file ~/.vim/clang-format.py<CR>
-imap <C-F> <C-O>:py3file ~/.vim/clang-format.py<CR>
+map <Leader>uf :pyfile ~/.vim/clang-format-python2.py<CR>
+imap <C-F> <C-O>:pyfile ~/.vim/clang-format-python2.py<CR>
 
 so ~/.vim/.vimrc_from_internet
 so ~/.vim/DoxygenToolkit.vim

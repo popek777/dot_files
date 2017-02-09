@@ -38,6 +38,9 @@ flags = [
 '-Wall',
 '-Wextra',
 '-Werror',
+# opera specific setting (unused variable, in particular function arg)
+'-Wno-unused-variable',
+'-Wno-unused-parameter',
 # opera specific setting (remove c98 support)
 # '-Wc++98-compat',
 '-Wno-long-long',
@@ -74,9 +77,16 @@ flags = [
 '.',
 '-I',
 './ClangCompleter',
-# opera specific inlcude
+# ---- opera specific inlcude ----
 '-I',
 './chromium/src',
+'-I',
+'./chromium/src/third_party/skia/include',
+'-I',
+'./chromium/src/third_party/WebKit/Source',
+'-I',
+'./desktop/chrome_imports',
+# -------------------------------- 
 '-isystem',
 './tests/gmock/gtest',
 '-isystem',

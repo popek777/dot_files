@@ -44,17 +44,40 @@ function! FOperaUpdateCtagsDb()
         \ --exclude=chromium/src/build* 
         \ .
 endfunction
+function! FOperaUpdateCtagsWithThirdpartyDb()
+  :!cd $HOME/workspace/work
+        \ && rm -f tags 
+        \ 
+        \ && ctags 
+        \ --c++-kinds=+p 
+        \ --fields=+iaS 
+        \ --extra=+q 
+        \ -f ./tags 
+        \ -R
+        \ --languages=C++ 
+        \ --exclude=chromium/src/out/* 
+        \ --exclude=chromium/src/build* 
+        \ .
+endfunction
 :command! OperaUpdateCtagsDb :call FOperaUpdateCtagsDb()
+:command! OperaUpdateCtagsWithThirdpartyDb :call FOperaUpdateCtagsWithThirdpartyDb()
 
 " based on
 " http://vim.wikia.com/wiki/Easily_switch_between_source_and_header_file
 function! SwitchSourceHeader()
   let l:ext = expand ("%:e")
   echo l:ext
-  if ( l:ext == "cc")
+  if ( l:ext == "cc" || l:ext == "cpp")
     find %:t:r.h
   elseif (l:ext == "h")
-    find %:t:r.cc
+    let l:no_ext = expand("%:p:r")
+    if filereadable(l:no_ext . ".cc")
+      find %:t:r.cc
+    elseif filereadable(l:no_ext . ".cpp")
+      find %:t:r.cpp
+    else
+      echo "cc, nor cpp file was not found"
+    endif
   else 
     echo "toggling skipped (not a c++ file)"
   endif
@@ -67,7 +90,7 @@ nmap ,s :call SwitchSourceHeader()<CR>
 let g:ycm_global_ycm_extra_conf = $HOME . '/.vim/.ycm_extra_conf_opera.py'
 
 " extend path (so gf - goto file under cursor) works correctly 
-set path=.,,/usr/include,chromium/src
+set path=.,,/usr/include,chromium/src,chromium/src/third_party/WebKit/Source,chromium/src/out/Debug
 
 " rtags settings
 let g:rtagsRcCmd=$HOME . '/rtags/build/bin/rc'
