@@ -1,0 +1,3 @@
+[submodule ".vim/bundle/BufOnly.vim"]
+	path = .vim/bundle/BufOnly.vim
+	url = https://github.com/vim-scripts/BufOnly.vim.git
