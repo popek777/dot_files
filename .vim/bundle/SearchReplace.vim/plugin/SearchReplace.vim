@@ -67,7 +67,8 @@ function! MMFastFindUsingGrep(pattern_to_find, find_whole_word, csv_extensions)
 
     cgetexpr system('grep -' . l:grep_flags . ' '
                     \ . s:GrepLikeCsvExtensionList2IncludePattern(a:csv_extensions)
-                    \ . ' ' . l:pattern_to_find)
+                    \ . ' --exclude-dir=*.git/ '
+                    \ . l:pattern_to_find)
 endfunction
 
 " s(earch) c(like files)
@@ -102,13 +103,13 @@ function! MMReplaceInAllFiles(old, whole_word, csv_extensions)
           \ . sed_arg . old_ext  . sed_arg . "/" . new_ext . "/g'"
 endfunction
 
-:command! -nargs=* MMafr :call MMReplaceInAllFiles('<f-args>')
+:command! -nargs=* MMafr :call MMReplaceInAllFiles(<f-args>)
 " a(ll files) w(hole) w(ord under cursor) r(eplace)
 :nmap <Leader>awwr 
       \ :MMafr <C-R><C-W> 1 g:search_replace_current_extensions_csv<CR>
 " a(ll files) s(election) r(emplace) 
 :vn <Leader>asr 
-      \ y:call MMReplaceInAllFiles(@", 0, g:search_replace_current_extensions_csv)<CR>
+      \ y:call MMReplaceInAllFiles(@", 1, g:search_replace_current_extensions_csv)<CR>
 
 
 " r(eplace) w(ord) in file

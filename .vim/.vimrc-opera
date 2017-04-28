@@ -5,8 +5,17 @@
 let g:c_like_files_extensions_csv='cpp,cc,h,hpp'
 
 " build command
+function! s:OperaBuildWrapper(target)
+  :wa
+  :cgetexpr 'about to build target: ' . a:target
+  :botright copen
+  " jump to previous window
+  :wincmd p
+
+  :cgetexpr system('ninja -C ./chromium/src/out/Debug/ ' . a:target)
+endfunction
 :command! -nargs=1 OperaBuild 
-      \ :cgetexpr system('ninja -C ./chromium/src/out/Debug/ <args>')
+      \ :call s:OperaBuildWrapper('<args>')
 
 " clang formatter path (variable used in clang-format.py script)
 let g:clang_format_path = 

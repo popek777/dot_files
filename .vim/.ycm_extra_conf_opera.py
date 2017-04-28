@@ -77,6 +77,13 @@ flags = [
 '.',
 '-I',
 './ClangCompleter',
+# generated files includes (I assume Debug build in default location)
+'-I',
+'./chromium/src/out/Debug/gen/blink',
+'-I',
+'./chromium/src/out/Debug/gen',
+'-I',
+'./desktop/chrome_imports',
 # ---- opera specific inlcude ----
 '-I',
 './chromium/src',
@@ -88,11 +95,6 @@ flags = [
 './chromium/src/third_party/WebKit',
 '-I',
 './chromium/src/third_party/WebKit/Source',
-# generated files includes (I assume Debug build in default location)
-'-I',
-'./chromium/src/out/Debug/gen/blink',
-'-I',
-'./desktop/chrome_imports',
 # -------------------------------- 
 '-isystem',
 './tests/gmock/gtest',

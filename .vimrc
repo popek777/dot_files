@@ -45,22 +45,9 @@ so ~/.vim/DoxygenToolkit.vim
 
 " ===== c/c++ settings BEGIN ==========================
 " set default make prg 
-set makeprg=make\ -C\ build
+" set makeprg=make\ -C\ build
 " 'write all and build'
 "nnoremap <F7> :wa<CR>:make!<CR>
-
-" headers gurads in c++ 
-" (source: http://vim.wikia.com/wiki/Automatic_insertion_of_C/C%2B%2B_header_gates) 
-"function! insert_header_guards()
-    "let gatename = substitute(toupper(expand("%:t")), "\\.", "_", "g")
-    "execute "normal! i#pragma once"
-    "execute "normal! o#ifndef " . gatename
-    "execute "normal! o#define " . gatename . " "
-    "execute "normal! Go#endif /* #ifndef " . gatename . " */"
-    "normal! kk
-"endfunction
-"nmap <Leader>hg :call insert_header_guards()<CR>
-"autocmd BufNewFile *.{h,hpp} call <SID>insert_gates()
 
 " clang-format tool
 " u(pdate) f(ormat)
