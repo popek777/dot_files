@@ -95,6 +95,11 @@ flags = [
 './chromium/src/third_party/WebKit',
 '-I',
 './chromium/src/third_party/WebKit/Source',
+# sysroot includes. 
+# NOTE: Assumption is that 'sysroots' directory is sibling of 'work'
+# directory 
+'-I',
+'./../sysroots/jessie-x64/usr/include/c++/4.8',
 # -------------------------------- 
 '-isystem',
 './tests/gmock/gtest',

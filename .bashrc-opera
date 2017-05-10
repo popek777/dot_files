@@ -6,35 +6,15 @@
 
 export PATH=$PATH:$HOME/workspace/depot_tools
 
-function operadev_32_ld_library_path()
-{
-  # export library paths for 32 bit apps
-  export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:\
-/lib/i386-linux-gnu/:\
-/usr/lib/i386-linux-gnu/:\
-/lib/i686-linux-gnu/:\
-/usr/lib/i686-linux-gnu/:\
-$HOME/workspace/sysroots/wheezy-ia32/lib/i386-linux-gnu/:\
-$HOME/workspace/sysroots/wheezy-ia32/usr/lib/i386-linux-gnu/
+#Some tips to be used when working with opera dev branch
 
-}
+#1) copy file from chromium/src into chrome_imports
 
-function operadev_rtags_rdm()
-{
-  RTAGS_BIN_DIR=$HOME/rtags/build/bin
-  $RTAGS_BIN_DIR/rdm -L $HOME/.rdm-log &
-}
+#- copy a file 
+#- if it is unittest then add it to test desktop_browser_unittest project
+#- add file to appropriate IMPORTED.info file. Last-sync to be taken from
+  #chromium/src with: 'git merge-base HEAD origin/upstream/dev' command
+  #(chromium/src submodule must be up to date)
 
-function operadev_rtags_update_indexes()
-{
-  PROJECT_DIR=$HOME/workspace/work
-  PROJECT_OUT_DIR=$PROJECT_DIR/chromium/src/out/Debug
-
-  RTAGS_BIN_DIR=$HOME/rtags/build/bin
-
-  cd $PROJECT_OUT_DIR
-  ninja -t compdb cc > compile_commands.json
-
-  $RTAGS_BIN_DIR/rc -J $PROJECT_OUT_DIR/compile_commands.json
-}
-
+#2) prepare build using GN:
+# ./desktop/gn_opera.py --force --arch=x64 target_sysroot_dir=\"/home/mwrobel/workspace/sysroots\"

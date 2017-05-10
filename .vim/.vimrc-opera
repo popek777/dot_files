@@ -97,9 +97,15 @@ nmap ,s :call SwitchSourceHeader()<CR>
 " path to config file (the only difference with default one is additional
 " includes)
 let g:ycm_global_ycm_extra_conf = $HOME . '/.vim/.ycm_extra_conf_opera.py'
+let g:ycm_extra_conf_globlist = ['~/workspace/work/*']
 
 " extend path (so gf - goto file under cursor) works correctly 
 set path=.,,/usr/include,chromium/src,chromium/src/v8/include,chromium/src/third_party/WebKit,chromium/src/third_party/WebKit/Source,chromium/src/out/Debug,chromium/src/out/Debug/blink
 
-" rtags settings
-let g:rtagsRcCmd=$HOME . '/rtags/build/bin/rc'
+" write, clang-format and cpp-lint on a buffer 
+" TODO: if vim is compiled with python 2.7 (instead of 3.x) use pyfile instead py3file
+autocmd FileType cpp nmap <buffer> <F7> 
+      \ :w<CR>
+      \ :pyfile ~/.vim/clang-format-python2.py<CR>
+      \ :call Cpplint()<CR>
+
