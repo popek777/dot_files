@@ -2,7 +2,7 @@
 " opera codebase settings, functions, commands
 "
 
-let g:c_like_files_extensions_csv='cpp,cc,h,hpp'
+let g:search_replace_c_like_files_extensions_csv='cpp,cc,h,hpp'
 
 " build command
 function! s:OperaBuildWrapper(target)
@@ -108,4 +108,22 @@ autocmd FileType cpp nmap <buffer> <F7>
       \ :w<CR>
       \ :pyfile ~/.vim/clang-format-python2.py<CR>
       \ :call Cpplint()<CR>
+
+" find file in current dir. based on file path. Usefull when trying to open file
+" from gn/gni file and gf does not work
+function! s:FTryOpenFile(file_name)
+  if len(a:file_name) == 0
+    echo 'TryOpenFile: empty file name provided. Nothing to do'
+    return 
+  endif
+
+  " TODO: there are limitation: 
+  " when more then one file found this function will fail. 
+  " This could be imprved
+  exe ':e ' . system('find . -name '. a:file_name)
+endfunction
+" helper command (to be able to map functionality)
+:command! OperaHelperCmdTryOpenFileUnderCursor
+      \ :call s:FTryOpenFile(expand('<cfile>:t'))
+nmap ,g :OperaHelperCmdTryOpenFileUnderCursor<CR>
 

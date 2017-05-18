@@ -100,6 +100,10 @@ flags = [
 # directory 
 '-I',
 './../sysroots/jessie-x64/usr/include/c++/4.8',
+'-I',
+'./../sysroots/jessie-x64/usr/include/gtk-3.0/',
+'-I',
+'./../sysroots/jessie-x64/usr/include/gtk-2.0/',
 # -------------------------------- 
 '-isystem',
 './tests/gmock/gtest',

@@ -1,7 +1,7 @@
 " my auxiliary settings
 " variable containing cxx language file extension in comma separated list 
-let g:c_like_files_extensions_csv='cpp,cc,c,h,hpp'
-let g:search_replace_current_extensions_csv = g:c_like_files_extensions_csv
+let g:search_replace_c_like_files_extensions_csv='cpp,cc,c,h,hpp'
+let g:search_replace_current_extensions_csv = g:search_replace_c_like_files_extensions_csv
 
 " taken from nerd commenter
 augroup SearchReplace 
@@ -16,7 +16,7 @@ augroup END
 
 function s:SetCurrentExtensions(filetype)
   if a:filetype == 'cpp'
-    let g:search_replace_current_extensions_csv = g:c_like_files_extensions_csv
+    let g:search_replace_current_extensions_csv = g:search_replace_c_like_files_extensions_csv
     return
   endif
 
@@ -39,7 +39,7 @@ function s:SetCurrentExtensions(filetype)
   endif
 
   " set default extensions
-  let g:search_replace_current_extensions_csv = g:c_like_files_extensions_csv
+  let g:search_replace_current_extensions_csv = g:search_replace_c_like_files_extensions_csv
 endfunction
 
 " auxiliary function returning bash grep command with includes list
