@@ -6,6 +6,28 @@
 
 export PATH=$PATH:$HOME/workspace/depot_tools
 
+
+function opera_print_process_types()
+{
+  ts=$(date +%T)
+  f1=".f1-${ts}"
+  f2=".f2-${ts}"
+
+  ps -u $USER | \
+    grep opera-developer | \
+    awk '{print "/proc/"$1"/cmdline\n"}' | \
+    xargs sed 's/\0/<00>/g' | \
+    awk '{print $2}'  > $f1
+  
+  ps -u $USER | \
+      grep opera-developer | \
+      awk '{print $1}' > $f2
+
+  paste $f2 $f1
+
+  rm $f1 && rm $f2
+}
+
 #Some tips to be used when working with opera dev branch
 
 #1) copy file from chromium/src into chrome_imports

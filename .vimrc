@@ -85,7 +85,12 @@ set foldmethod=syntax
 set nofoldenable
 
 " exit with saving session 
-nnoremap <F4> :mksession! last.vim<CR>:qa<CR>
+function! s:FSaveSessionAndExit(session_file_name)
+  execute 'mksession! ' . a:session_file_name.'.vim'
+  qa
+endfunction
+command! -nargs=1 SaveSessionAndExit :call s:FSaveSessionAndExit(<f-args>)
+nnoremap <F4> :SaveSessionAndExit last<CR>
 
 " Opera code specific settings
 so ~/.vim/.vimrc-opera

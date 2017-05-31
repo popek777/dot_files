@@ -30,12 +30,17 @@ function s:SetCurrentExtensions(filetype)
     return
   endif
 
+  let l:ext = expand('%:e')
   if a:filetype == 'conf'
-    let l:ext = expand('%:e')
     if l:ext == 'gn' || l:ext == 'gni'
       let g:search_replace_current_extensions_csv = 'gn,gni'
       return
     endif
+  endif
+
+  if len(l:ext) > 0
+    let g:search_replace_current_extensions_csv = l:ext
+    return
   endif
 
   " set default extensions

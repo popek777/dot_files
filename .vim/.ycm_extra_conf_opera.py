@@ -88,6 +88,8 @@ flags = [
 '-I',
 './chromium/src',
 '-I',
+'./chromium/src/third_party',
+'-I',
 './chromium/src/third_party/skia/include',
 '-I',
 './chromium/src/v8/include',
