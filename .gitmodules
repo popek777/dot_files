@@ -10,3 +10,6 @@
 [submodule ".vim/bundle/vim-bookmarks"]
 	path = .vim/bundle/vim-bookmarks
 	url = https://github.com/MattesGroeger/vim-bookmarks.git
+[submodule ".vim/bundle/vim-cpplint"]
+	path = .vim/bundle/vim-cpplint
+	url = https://github.com/funorpain/vim-cpplint.git
