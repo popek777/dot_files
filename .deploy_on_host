@@ -13,6 +13,24 @@ sudo apt-get install build-essential cmake
 sudo apt-get install python-dev python3-dev
 cd $REPO_DIR/.vim/bundle/YouCompleteMe && ./install.py --clang-completer
 
-# mov vim config
-sudo mv $REPO_DIR/.vim $HOME/
-sudo mv $REPO_DIR/.vimrc $HOME/
+function link_config()
+{
+  link=$HOME/$1
+  target=$REPO_DIR/$1
+
+  if [ -L "$link" ]; then
+    echo current $link is soft link. Removing it.
+    unlink $link
+  elif [ -e "$link" ]; then
+    echo backing up current $link into: $HOME/.backups
+    mkdir -p $HOME/.backups
+    mv $link $HOME/.backups
+  fi
+
+  ln -s $target $link
+}
+
+link_config .vim
+link_config .vimrc
+link_config .tmux.conf
+
