@@ -92,9 +92,6 @@ endfunction
 command! -nargs=1 SaveSessionAndExit :call s:FSaveSessionAndExit(<f-args>)
 nnoremap <F4> :SaveSessionAndExit last<CR>
 
-" Opera code specific settings
-so ~/.vim/.vimrc-opera
-
 " indentation
 set autoindent
 set softtabstop=4

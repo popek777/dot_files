@@ -11,6 +11,3 @@ rm -rf $REPO_DIR/.vimrc
 cp -R $HOME/.vim $REPO_DIR
 find $REPO_DIR/.vim -name *.pyc | xargs rm
 cp $HOME/.vimrc $REPO_DIR
-
-# update opera bashrc settings
-cp $HOME/.bashrc-opera $REPO_DIR
