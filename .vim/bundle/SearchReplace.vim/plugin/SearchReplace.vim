@@ -30,6 +30,11 @@ function s:SetCurrentExtensions(filetype)
     return
   endif
 
+  if a:filetype == 'cmake'
+    let g:search_replace_current_extensions_csv = 'txt,cmake' 
+    return
+  endif
+
   let l:ext = expand('%:e')
   if a:filetype == 'conf'
     if l:ext == 'gn' || l:ext == 'gni'
@@ -55,8 +60,42 @@ function s:GrepLikeCsvExtensionList2IncludePattern(csv_extensions)
   else
     return l:include_pattern . a:csv_extensions
   endif
-  
 endfunction
+
+function! s:Grep(
+      \ pattern_to_find,
+      \ subdirectory_to_look_in,
+      \ file_path_pattern_to_exclude,
+      \ find_whole_word,
+      \ ignore_case,
+      \ csv_extensions)
+  let l:cmdline = 'grep -nr' . (a:find_whole_word ? 'w' : '') . (a:ignore_case ? 'i' : '') . ' '
+        \ . s:GrepLikeCsvExtensionList2IncludePattern(a:csv_extensions)
+        \ . ' --exclude-dir=*.git/'
+        \ . ' --exclude-dir=*.svn/'
+        \ . ' ' . a:pattern_to_find
+        \ . (len(a:subdirectory_to_look_in) > 1 ? (' '. a:subdirectory_to_look_in) : '')
+        \ . (len(a:file_path_pattern_to_exclude) > 1 ? (' | grep -v '. a:file_path_pattern_to_exclude) : '')
+
+  cgetexpr system(l:cmdline)
+endfunction
+
+function! s:InteractiveGrep(pattern_to_find)
+  let subdir = input("subdirectory ?", '', 'dir')
+  let whole_word = input("whole word ?", 'n')
+  let ignore_case = input("ignore case ?", 'y')
+
+  call s:Grep(a:pattern_to_find,
+        \ subdir,
+        \ '',
+        \ whole_word == 'n' ? 0 : 1,
+        \ ignore_case == 'y' ? 1 : 0,
+        \ g:search_replace_current_extensions_csv)
+  botright copen
+endfunction
+
+" pass pattern to find, subdirectory, exclude path pattern
+:command! -nargs=1 SRGrep :call s:InteractiveGrep('<f-args>')
 
 " find in files
 function! MMFastFindUsingGrep(pattern_to_find, find_whole_word, csv_extensions)

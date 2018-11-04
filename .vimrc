@@ -12,13 +12,23 @@ filetype plugin indent on
 " YCM
 " default file taken from plugin ycm server
 let g:ycm_global_ycm_extra_conf = $HOME . '/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
+let g:ycm_autoclose_preview_window_after_completion = 1
+let g:ycm_seed_identifiers_with_syntax = 1
+let g:ycm_confirm_extra_conf = 0
+let g:ycm_add_preview_to_completeopt = 0
 nmap <Leader>g :YcmCompleter GoTo<CR>
+set encoding=utf-8
 "------------------------------------------------------
 " NERDTree
 nmap <C-n> :NERDTreeToggle<CR>
 " finds current buffer in nerdtree - n(erdtree) f(ind)
 nmap <Leader>nf :NERDTreeFind<CR>
 let g:NERDTreeDirArrows = 0
+let g:NERDTreeDirArrowsExpandible="+"
+let g:NERDTreeDirArrowsCollapsible="~"
+"------------------------------------------------------
+" vim-fswitch
+nmap ,s :FSHere<CR>
 "------------------------------------------------------
 " cscope
 "so ~/.vim/cscope_maps.vim
@@ -74,8 +84,9 @@ nnoremap <C-k> <C-w>k
 nnoremap <C-l> <C-w>l
 
 " solarized settings: based on https://gist.github.com/ryu-blacknd/3281760
-set t_Co=256
+"set t_Co=256
 set background=dark
+colorscheme jellybeans
 
 set textwidth=80
 
@@ -86,8 +97,12 @@ set nofoldenable
 
 " exit with saving session 
 function! s:FSaveSessionAndExit(session_file_name)
+  " closes nerdtree since the next time nerd tree would be opened empty
+  " It only closes nerdtree in current tab but it is good enougho
+  NERDTreeClose
+  cclose
   execute 'mksession! ' . a:session_file_name.'.vim'
-  qa
+  quitall
 endfunction
 command! -nargs=1 SaveSessionAndExit :call s:FSaveSessionAndExit(<f-args>)
 nnoremap <F4> :SaveSessionAndExit last<CR>
