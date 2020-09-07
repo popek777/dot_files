@@ -111,4 +111,36 @@ nnoremap <F4> :SaveSessionAndExit last<CR>
 set autoindent
 set softtabstop=4
 set expandtab
-set shiftwidth=2 
+set shiftwidth=2
+
+" search replace plugin settings
+let g:search_replace_exclude_dirs=['CMakeFiles']
+let g:search_replace_excludes=['CMakeCache.txt', 'compile_commands.json']
+
+function! s:FFindOnQuick(filename)
+  let subdir = input('subdirectory? ', '', 'dir')
+  if len(l:subdir) == 0
+    let l:subdir = '.'
+  endif
+  cgetexpr system('vim_bash_find ' . l:subdir . ' ' . a:filename)
+  copen
+endfunction
+command! -nargs=1 FindOnQuick :call s:FFindOnQuick('<f-args>')
+nmap <Leader>ff :FindOnQuick <C-R><C-W><CR>
+
+function! s:FMakeProject(project_dir)
+    cgetexp system('make -j 12 --directory ' . a:project_dir)
+    botright copen
+endfunction
+command! -nargs=1 MakeProject :call s:FMakeProject(<f-args>)
+
+function! s:FMakeCurrentFileProject()
+    let makefile_directory = system('vim_get_makefile_of_project_owning_file_directory ' . getreg('%'))
+    call s:FMakeProject(makefile_directory)
+endfunction
+command! -nargs=0 MakeCurrentFileProject :call s:FMakeCurrentFileProject()
+nnoremap <F7> :wa<CR>:MakeCurrentFileProject<CR>
+
+highlight! link Comment NonText
+" to revert comment highlight likn use command below:
+" highlight! link Comment NONE
