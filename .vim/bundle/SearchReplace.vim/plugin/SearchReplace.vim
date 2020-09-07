@@ -1,7 +1,11 @@
 " my auxiliary settings
 " variable containing cxx language file extension in comma separated list 
-let g:search_replace_c_like_files_extensions_csv='cpp,cc,c,h,hpp'
+let g:search_replace_c_like_files_extensions_csv='cpp,cc,c,C,h,H,hpp'
 let g:search_replace_current_extensions_csv = g:search_replace_c_like_files_extensions_csv
+
+let g:interactive_grep_subdir=''
+let g:interactive_grep_whole_word='n'
+let g:interactive_grep_ignore_case='y'
 
 " taken from nerd commenter
 augroup SearchReplace 
@@ -54,6 +58,10 @@ endfunction
 
 " auxiliary function returning bash grep command with includes list
 function s:GrepLikeCsvExtensionList2IncludePattern(csv_extensions)
+  if len(a:csv_extensions) == 0
+      return ''
+  endif
+
   let l:include_pattern = '--include=*.'
   if(len(split(a:csv_extensions, ',')) > 1)
     return l:include_pattern . '{' . a:csv_extensions . '}'
@@ -71,8 +79,29 @@ function! s:Grep(
       \ csv_extensions)
   let l:cmdline = 'grep -nr' . (a:find_whole_word ? 'w' : '') . (a:ignore_case ? 'i' : '') . ' '
         \ . s:GrepLikeCsvExtensionList2IncludePattern(a:csv_extensions)
+        \ . ' --exclude=*.swp'
         \ . ' --exclude-dir=*.git/'
         \ . ' --exclude-dir=*.svn/'
+        \ . ' --binary-files=without-match'
+
+
+  if exists('g:search_replace_exclude_dirs')
+      for exclude_dir in g:search_replace_exclude_dirs
+        if len(exclude_dir) > 0 
+          let l:cmdline = l:cmdline . ' --exclude-dir=' . exclude_dir
+        endif
+      endfor
+  endif
+
+  if exists('g:search_replace_excludes')
+      for exclude in g:search_replace_excludes
+        if len(exclude) > 0 
+          let l:cmdline = l:cmdline . ' --exclude=' . exclude
+        endif
+      endfor
+  endif
+
+  let l:cmdline = l:cmdline 
         \ . ' ' . a:pattern_to_find
         \ . (len(a:subdirectory_to_look_in) > 1 ? (' '. a:subdirectory_to_look_in) : '')
         \ . (len(a:file_path_pattern_to_exclude) > 1 ? (' | grep -v '. a:file_path_pattern_to_exclude) : '')
@@ -80,22 +109,23 @@ function! s:Grep(
   cgetexpr system(l:cmdline)
 endfunction
 
-function! s:InteractiveGrep(pattern_to_find)
-  let subdir = input("subdirectory ?", '', 'dir')
-  let whole_word = input("whole word ?", 'n')
-  let ignore_case = input("ignore case ?", 'y')
+function! s:InteractiveGrep(pattern_to_find, extensions_csv)
+  let g:interactive_grep_subdir = input("subdirectory: ", g:interactive_grep_subdir, 'dir')
+  let g:interactive_grep_whole_word = input("whole word: ", g:interactive_grep_whole_word)
+  let g:interactive_grep_ignore_case = input("ignore case: ", g:interactive_grep_ignore_case)
 
   call s:Grep(a:pattern_to_find,
-        \ subdir,
+        \ g:interactive_grep_subdir,
         \ '',
-        \ whole_word == 'n' ? 0 : 1,
-        \ ignore_case == 'y' ? 1 : 0,
-        \ g:search_replace_current_extensions_csv)
+        \ g:interactive_grep_whole_word == 'n' ? 0 : 1,
+        \ g:interactive_grep_ignore_case == 'y' ? 1 : 0,
+        \ a:extensions_csv)
   botright copen
 endfunction
 
 " pass pattern to find, subdirectory, exclude path pattern
-:command! -nargs=1 SRGrep :call s:InteractiveGrep('<f-args>')
+:command! -nargs=1 SRGrep :call s:InteractiveGrep('<f-args>', g:search_replace_current_extensions_csv)
+:command! -nargs=1 SRGrepAll :call s:InteractiveGrep('<f-args>', '')
 
 " find in files
 function! MMFastFindUsingGrep(pattern_to_find, find_whole_word, csv_extensions)
@@ -176,4 +206,3 @@ endfunction
 :vn <Leader>sr y:call MMFunReplace(@", 0)<CR>
 " w(hole) s(election) r(emplace) 
 :vn <Leader>wsr y:call MMFunReplace(@", 1)<CR>
-
