@@ -13,6 +13,9 @@ sudo apt-get install build-essential cmake
 sudo apt-get install python-dev python3-dev
 cd $REPO_DIR/.vim/bundle/YouCompleteMe && ./install.py --clang-completer
 
+echo 'install compiledb (to be able to generated compile_commands.json used by YCM vim plugin'
+sudo apt-get install compiledb
+
 function link_config()
 {
   link=$HOME/$1
