@@ -4,6 +4,10 @@ set nocompatible
 
 set nowrap
 
+" shell i(nteractive_ so it loads bashrc which means user defined
+" functions/aliases are visible)
+set shellcmdflag=-ic
+
 execute pathogen#infect()
 syntax on
 filetype plugin indent on
@@ -11,12 +15,40 @@ filetype plugin indent on
 " ===== Plugins additional settings BEGIN =============
 " YCM
 " default file taken from plugin ycm server
-let g:ycm_global_ycm_extra_conf = $HOME . '/.vim/bundle/YouCompleteMe/third_party/ycmd/cpp/ycm/.ycm_extra_conf.py'
 let g:ycm_autoclose_preview_window_after_completion = 1
 let g:ycm_seed_identifiers_with_syntax = 1
 let g:ycm_confirm_extra_conf = 0
 let g:ycm_add_preview_to_completeopt = 0
-nmap <Leader>g :YcmCompleter GoTo<CR>
+
+function! GoYCM()
+  nnoremap <buffer> <silent> <leader>gd :YcmCompleter GoTo<CR>
+  nnoremap <buffer> <silent> <leader>gr :YcmCompleter GoToReferences<CR>
+  nnoremap <buffer> <silent> <leader>rr :YcmCompleter RefactorRename<CR>
+endfunction
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1] =~# '\s'
+endfunction
+function! GoCoc()
+  inoremap <buffer> <silent><expr> <TAB>
+        \ pumvisible() ? "\<C-n>" :
+        \ <SID>check_back_space() ? "\<TAB>" :
+        \ coc#refresh()
+
+  inoremap <buffer> <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+  inoremap <buffer> <silent><expr> <C-Space> coc#refresh()
+
+  nmap <buffer> <leader>gd <Plug>(coc-definition)
+  nmap <buffer> <leader>gy <Plug>(coc-type-definition)
+  nmap <buffer> <leader>gi <Plug>(coc-implementation)
+  nmap <buffer> <leader>gr <Plug>(coc-references)
+  nnoremap <buffer> <leader>cr :CocRestart 
+endfunction
+
+autocmd FileType typescript :call GoYCM()
+autocmd FileType cpp,cxx,h,hpp,c :call GoCoc()
+
 set encoding=utf-8
 "------------------------------------------------------
 " NERDTree
@@ -62,8 +94,8 @@ so ~/.vim/DoxygenToolkit.vim
 " clang-format tool
 " u(pdate) f(ormat)
 " TODO: if vim is compiled with python 2.7 (instead of 3.x) use pyfile instead py3file
-map <Leader>uf :pyfile ~/.vim/clang-format-python2.py<CR>
-imap <C-F> <C-O>:pyfile ~/.vim/clang-format-python2.py<CR>
+map <Leader>uf :py3file ~/.vim/clang-format-python3.py<CR>
+imap <C-F> <C-O>:py3file ~/.vim/clang-format-python3.py<CR>
 " ===== c/c++ settings END  ==========================
 
 " tabs management
@@ -128,19 +160,13 @@ endfunction
 command! -nargs=1 FindOnQuick :call s:FFindOnQuick('<f-args>')
 nmap <Leader>ff :FindOnQuick <C-R><C-W><CR>
 
-function! s:FMakeProject(project_dir)
-    cgetexp system('make -j 12 --directory ' . a:project_dir)
-    botright copen
-endfunction
-command! -nargs=1 MakeProject :call s:FMakeProject(<f-args>)
-
-function! s:FMakeCurrentFileProject()
-    let makefile_directory = system('vim_get_makefile_of_project_owning_file_directory ' . getreg('%'))
-    call s:FMakeProject(makefile_directory)
-endfunction
-command! -nargs=0 MakeCurrentFileProject :call s:FMakeCurrentFileProject()
-nnoremap <F7> :wa<CR>:MakeCurrentFileProject<CR>
-
 highlight! link Comment NonText
 " to revert comment highlight likn use command below:
 " highlight! link Comment NONE
+
+" if current directory has extra setting
+" (e.g. project related functionalities) then load it
+if filereadable(".vimrc_extra")
+  source .vimrc_extra 
+endif
+
