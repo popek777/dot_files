@@ -1,5 +1,6 @@
+#!/bin/bash
 
-export PYTHONPATH=$PYTHONPATH:$HOME/dev_env_settings
+export PYTHONPATH=$PYTHONPATH:$HOME/dot_files
 
 function vim_bash_find()
 {
@@ -12,9 +13,9 @@ function vim_switch_between_header_and_definition_file()
   python <<EOF
 import sys 
 import cpp_dev_env_tools
-if __name__ == '__main__':
-  cf = cpp_dev_env_tools.getCompanionFinder('$file_path').getLooseCompanion()
-  sys.stdout.write(cf if cf is not None else '')
+
+cf = cpp_dev_env_tools.getCompanionFinder('$file_path').getLooseCompanion()
+sys.stdout.write(cf if cf is not None else '')
 EOF
 }
 
@@ -25,15 +26,16 @@ function vim_get_makefile_of_project_owning_file_directory()
   python <<EOF
 import os
 import sys 
-if __name__ == '__main__':
-  dir = os.path.dirname('${file_path}')
-  while True:
-    if os.path.exists(os.path.join(dir, 'Makefile')):
-      sys.stdout.write(dir)
-      break
-    if dir == '/' or len(dir) == 0:
-      break
-    dir = os.path.dirname(dir)
+
+dir = os.path.dirname('${file_path}')
+
+while True:
+  if os.path.exists(os.path.join(dir, 'Makefile')):
+    sys.stdout.write(dir)
+    break
+  if dir == '/' or len(dir) == 0:
+    break
+  dir = os.path.dirname(dir)
 EOF
 }
 
@@ -50,7 +52,7 @@ EOF
 
   echo 'relinking ycm config ...'
   rm -rf .ycm_extra_conf.py
-  ln -s $HOME/dev_env_settings/.ycm_extra_conf.py .ycm_extra_conf.py
+  ln -s $HOME/dot_files/.ycm_extra_conf.py .ycm_extra_conf.py
 
   echo 'done. Just double check if .ycm_extra_conf.py and compile_commands.json are here ;)'
 }

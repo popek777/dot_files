@@ -8,46 +8,64 @@ set nowrap
 " functions/aliases are visible)
 set shellcmdflag=-ic
 
-execute pathogen#infect()
-syntax on
-filetype plugin indent on
+call plug#begin('~/.vim/plugged')
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
-" ===== Plugins additional settings BEGIN =============
-" YCM
-" default file taken from plugin ycm server
-let g:ycm_autoclose_preview_window_after_completion = 1
-let g:ycm_seed_identifiers_with_syntax = 1
-let g:ycm_confirm_extra_conf = 0
-let g:ycm_add_preview_to_completeopt = 0
+Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
+Plug 'Xuyuanp/nerdtree-git-plugin'
+Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+Plug 'ryanoasis/vim-devicons'
 
-function! GoYCM()
-  nnoremap <buffer> <silent> <leader>gd :YcmCompleter GoTo<CR>
-  nnoremap <buffer> <silent> <leader>gr :YcmCompleter GoToReferences<CR>
-  nnoremap <buffer> <silent> <leader>rr :YcmCompleter RefactorRename<CR>
-endfunction
+Plug 'ctrlpvim/ctrlp.vim'
+Plug 'tpope/vim-fugitive'
+"Plug 'Valloric/YouCompleteMe'
+Plug 'MattesGroeger/vim-bookmarks'
+Plug 'scrooloose/nerdtree'
+Plug 'scrooloose/nerdcommenter'
+Plug 'vim-scripts/BufOnly.vim'
+Plug 'fatih/vim-go'
+Plug 'derekwyatt/vim-fswitch'
+"Plug 'morhetz/gruvbox'
+call plug#end()
 
-function! s:check_back_space() abort
-  let col = col('.') - 1
-  return !col || getline('.')[col - 1] =~# '\s'
-endfunction
-function! GoCoc()
-  inoremap <buffer> <silent><expr> <TAB>
-        \ pumvisible() ? "\<C-n>" :
-        \ <SID>check_back_space() ? "\<TAB>" :
-        \ coc#refresh()
+source $HOME/dot_files/.coc.init.vim
 
-  inoremap <buffer> <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-  inoremap <buffer> <silent><expr> <C-Space> coc#refresh()
+"" ===== Plugins additional settings BEGIN =============
+"" YCM
+"" default file taken from plugin ycm server
+"let g:ycm_autoclose_preview_window_after_completion = 1
+"let g:ycm_seed_identifiers_with_syntax = 1
+"let g:ycm_confirm_extra_conf = 0
+"let g:ycm_add_preview_to_completeopt = 0
 
-  nmap <buffer> <leader>gd <Plug>(coc-definition)
-  nmap <buffer> <leader>gy <Plug>(coc-type-definition)
-  nmap <buffer> <leader>gi <Plug>(coc-implementation)
-  nmap <buffer> <leader>gr <Plug>(coc-references)
-  nnoremap <buffer> <leader>cr :CocRestart 
-endfunction
+"function! GoYCM()
+  "nnoremap <buffer> <silent> <leader>gd :YcmCompleter GoTo<CR>
+  "nnoremap <buffer> <silent> <leader>gr :YcmCompleter GoToReferences<CR>
+  "nnoremap <buffer> <silent> <leader>rr :YcmCompleter RefactorRename<CR>
+"endfunction
 
-autocmd FileType typescript :call GoYCM()
-autocmd FileType cpp,cxx,h,hpp,c :call GoCoc()
+"function! s:check_back_space() abort
+  "let col = col('.') - 1
+  "return !col || getline('.')[col - 1] =~# '\s'
+"endfunction
+"function! GoCoc()
+  "inoremap <buffer> <silent><expr> <TAB>
+        "\ pumvisible() ? "\<C-n>" :
+        "\ <SID>check_back_space() ? "\<TAB>" :
+        "\ coc#refresh()
+
+  "inoremap <buffer> <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+  "inoremap <buffer> <silent><expr> <C-Space> coc#refresh()
+
+  "nmap <buffer> <leader>gd <Plug>(coc-definition)
+  "nmap <buffer> <leader>gy <Plug>(coc-type-definition)
+  "nmap <buffer> <leader>gi <Plug>(coc-implementation)
+  "nmap <buffer> <leader>gr <Plug>(coc-references)
+  "nnoremap <buffer> <leader>cr :CocRestart 
+"endfunction
+
+"autocmd FileType typescript :call GoYCM()
+"autocmd FileType cpp,cxx,h,hpp,c :call GoCoc()
 
 set encoding=utf-8
 "------------------------------------------------------
@@ -117,8 +135,8 @@ nnoremap <C-l> <C-w>l
 
 " solarized settings: based on https://gist.github.com/ryu-blacknd/3281760
 "set t_Co=256
-set background=dark
-colorscheme jellybeans
+"set background=dark
+"colorscheme jellybeans
 
 set textwidth=80
 
