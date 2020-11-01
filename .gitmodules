@@ -10,9 +10,6 @@
 [submodule ".vim/bundle/vim-bookmarks"]
 	path = .vim/bundle/vim-bookmarks
 	url = https://github.com/MattesGroeger/vim-bookmarks.git
-[submodule ".vim/bundle/vim-cpplint"]
-	path = .vim/bundle/vim-cpplint
-	url = https://github.com/funorpain/vim-cpplint.git
 [submodule ".vim/bundle/nerdtree"]
 	path = .vim/bundle/nerdtree
 	url = https://github.com/scrooloose/nerdtree.git
@@ -22,18 +19,9 @@
 [submodule ".vim/bundle/ctrlp.vim"]
 	path = .vim/bundle/ctrlp.vim
 	url = https://github.com/ctrlpvim/ctrlp.vim.git
-[submodule ".vim/bundle/Conque-GDB"]
-	path = .vim/bundle/Conque-GDB
-	url = https://github.com/vim-scripts/Conque-GDB.git
-[submodule ".vim/bundle/vim-colors-solarized"]
-	path = .vim/bundle/vim-colors-solarized
-	url = https://github.com/altercation/vim-colors-solarized.git
 [submodule ".vim/bundle/vim-go"]
 	path = .vim/bundle/vim-go
 	url = https://github.com/fatih/vim-go.git
 [submodule ".vim/bundle/vim-fswitch"]
 	path = .vim/bundle/vim-fswitch
 	url = https://github.com/derekwyatt/vim-fswitch.git
-[submodule ".vim/bundle/jellybeans.vim"]
-	path = .vim/bundle/jellybeans.vim
-	url = https://github.com/nanotech/jellybeans.vim.git
