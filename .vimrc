@@ -8,7 +8,8 @@ set nowrap
 " functions/aliases are visible)
 set shellcmdflag=-ic
 
-call plug#begin('~/.vim/plugged')
+" call plug#begin('~/.vim/plugged')
+call plug#begin()
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
@@ -28,7 +29,7 @@ Plug 'derekwyatt/vim-fswitch'
 "Plug 'morhetz/gruvbox'
 call plug#end()
 
-source $HOME/dot_files/.coc.init.vim
+ source $HOME/.vim/.coc.init.original.vim
 
 "" ===== Plugins additional settings BEGIN =============
 "" YCM
