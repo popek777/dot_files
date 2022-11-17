@@ -152,3 +152,9 @@ nnoremap <silent><nowait> <space>j  :<C-u>CocNext<CR>
 nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
 " Resume latest coc list.
 nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
+
+" update highlight text so it is actualy visible under solarized color schema
+
+:hi link CocHighlightText NONE
+:hi link CocHighlightText MatchParen
+
