@@ -27,6 +27,9 @@ Plug 'vim-scripts/BufOnly.vim'
 "Plug 'fatih/vim-go'
 Plug 'derekwyatt/vim-fswitch'
 "Plug 'morhetz/gruvbox'
+
+Plug '~/.vim/bundle/SearchReplace.vim'
+
 call plug#end()
 
  source $HOME/.vim/.coc.init.original.vim
