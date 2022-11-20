@@ -8,14 +8,13 @@ set nowrap
 " functions/aliases are visible)
 set shellcmdflag=-ic
 
-" call plug#begin('~/.vim/plugged')
 call plug#begin()
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' }
-Plug 'Xuyuanp/nerdtree-git-plugin'
-Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
-Plug 'ryanoasis/vim-devicons'
+"Plug 'Xuyuanp/nerdtree-git-plugin'
+"Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+"Plug 'ryanoasis/vim-devicons'
 
 Plug 'ctrlpvim/ctrlp.vim'
 Plug 'tpope/vim-fugitive'
@@ -27,16 +26,17 @@ Plug 'vim-scripts/BufOnly.vim'
 "Plug 'fatih/vim-go'
 Plug 'derekwyatt/vim-fswitch'
 "Plug 'morhetz/gruvbox'
+Plug 'tmhedberg/SimpylFold'
 
 Plug '~/.vim/bundle/SearchReplace.vim'
 
 call plug#end()
 
- source $HOME/.vim/.coc.init.original.vim
+source $HOME/.vim/.coc.init.original.vim
 
-"" ===== Plugins additional settings BEGIN =============
-"" YCM
-"" default file taken from plugin ycm server
+" ===== Plugins additional settings BEGIN =============
+" YCM
+" default file taken from plugin ycm server
 "let g:ycm_autoclose_preview_window_after_completion = 1
 "let g:ycm_seed_identifiers_with_syntax = 1
 "let g:ycm_confirm_extra_conf = 0
