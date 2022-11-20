@@ -24,7 +24,7 @@ Plug 'MattesGroeger/vim-bookmarks'
 Plug 'scrooloose/nerdtree'
 Plug 'scrooloose/nerdcommenter'
 Plug 'vim-scripts/BufOnly.vim'
-Plug 'fatih/vim-go'
+"Plug 'fatih/vim-go'
 Plug 'derekwyatt/vim-fswitch'
 "Plug 'morhetz/gruvbox'
 call plug#end()
