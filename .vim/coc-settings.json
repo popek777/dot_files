@@ -1,3 +1,4 @@
 {
-  "clangd.arguments": ["--background-index"]
+  "clangd.arguments": ["--background-index"],
+  "pyright.inlayHints.variableTypes": false
 }
