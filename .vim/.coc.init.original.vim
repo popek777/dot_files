@@ -160,3 +160,7 @@ nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
 " hint color schema so it's not that disturbing (python plugin uses it to guess type)
 :hi CocInlayHint ctermbg=242 ctermfg=10
 
+" updats for colors of popup menu
+:hi CocFloating  ctermbg=242
+:hi CocMenuSel ctermfg=12
+
