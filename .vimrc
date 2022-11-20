@@ -192,3 +192,6 @@ if filereadable(".vimrc_extra")
   source .vimrc_extra 
 endif
 
+" visual mode color when (for solarized moba)
+:hi Visual ctermbg=242
+
