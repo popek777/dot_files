@@ -56,3 +56,6 @@ EOF
 
   echo 'done. Just double check if .ycm_extra_conf.py and compile_commands.json are here ;)'
 }
+
+# set env var to instruct cmake to generated compilation db
+export CMAKE_EXPORT_COMPILE_COMMANDS=ON
